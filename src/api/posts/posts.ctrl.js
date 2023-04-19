@@ -56,7 +56,16 @@ exports.write = async ctx => {
 * GET /api/posts
 * */
 exports.list = async ctx => {
-    let posts = await Post.findAll({include: [{model: User, attributes: {exclude: ['password']}}]}).catch(e => console.log(e));
+    let {page} = ctx.request.query
+    if(!page) page = 1;
+
+    let offset = 0;
+
+    if (page > 1) {
+        offset = 10 * (page - 1);
+    }
+
+    let posts = await Post.findAll({include: [{model: User, attributes: {exclude: ['password']}}], limit: 10, offset: offset}).catch(e => console.log(e));
     posts = JSON.parse(JSON.stringify(posts));
     ctx.body = posts.map(post => ({
         ...post,
