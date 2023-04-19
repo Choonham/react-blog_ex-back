@@ -1,0 +1,10 @@
+{
+  "development": {
+    "username": "database",
+    "password": "password",
+    "database": "test",
+    "host": "192.168.10.47",
+    "dialect": "mysql",
+    "jwt_secret": "123jo123jj45k23jh6543l475jk43345kj"
+  }
+}
