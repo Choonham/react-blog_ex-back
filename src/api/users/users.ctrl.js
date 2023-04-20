@@ -37,9 +37,11 @@ exports.register = async ctx => {
 
     delete user.password;
 
-    ctx.body = user;
+    const userOut = await User.findOne({where: {name: name}}).catch(e => console.log(e));
 
-    const token = jwtGenerator(user, config.jwt_secret);
+    ctx.body = userOut;
+
+    const token = jwtGenerator(userOut, config.jwt_secret);
 
     ctx.cookies.set('access_token', token, {
         maxAge: 1000 * 60 * 60 * 24 * 7,

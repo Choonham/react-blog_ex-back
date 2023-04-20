@@ -42,11 +42,12 @@ const User = db.user;
 exports.write = async ctx => {
     // REST API의 Request Body는 ctx.request.body에서 조회할 수 있다.
     const {title, body, tags, writer} = ctx.request.body;
+    const regex = /[^a-zA-Z0-9 \\,ㄱ-ㅎㅏ-ㅣ가-힣]/g;
 
     ctx.body = await Post.create({
         title: title,
         body: sanitizeHtml(body, sanitizeOption),
-        tags: JSON.stringify(tags),
+        tags: JSON.stringify(tags).replaceAll(regex, ""),
         writer: writer
     }).catch(e => console.log(e));
 };
@@ -133,12 +134,16 @@ exports.update = async ctx => {
     const {id} = ctx.params;
 
     const nextData = {...ctx.request.body};
+    const regex = /[^a-zA-Z0-9 \\,ㄱ-ㅎㅏ-ㅣ가-힣]/g;
+
 
     if(nextData.body) {
         nextData.body = sanitizeHtml(nextData.body, sanitizeOption);
     }
 
-    const post = await Post.update({...nextData.body}, {where: {id: id}});
+    const tags = nextData.tags && JSON.stringify(nextData.tags).replaceAll(regex, "");
+
+    const post = await Post.update({body:  nextData.body , title: nextData.title, tags: tags}, {where: {id: id}}).catch(e => console.log(e));
 
     if(!post) {
         ctx.status = 404;

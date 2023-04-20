@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "root",
-    "password": "0782",
+    "username": "choonham",
+    "password": "669366",
     "database": "test",
-    "host": "192.168.10.47",
+    "host": "localhost",
     "dialect": "mysql",
     "jwt_secret": "123jo123jj45k23jh6543l475jk43345kj"
   }
